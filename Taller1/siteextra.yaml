@@ -1,0 +1,24 @@
+- hosts: all
+  become: true
+  tasks:
+      # Actualizamos paquetes
+    - name: Actualizamos el sistema
+      apt: update_cache=yes upgrade=yes
+      # Instalar paquetes
+    - name: "Instalar git y nginix"
+      apt:
+          name:
+          - git
+          - nginx
+    - name: "Clonar repositorio"
+      git:
+        repo: "https://github.com/K1K04/k1k04-blog-deploy.git"
+        dest: /var/www/html/
+        force: yes
+ # Cambiar el propietario a www-data
+    - name: "Cambiar propietario a www-data"
+      file:
+        path: /var/www/html/k1k04-blog-deploy
+        owner: www-data
+        group: www-data
+        state: directory
